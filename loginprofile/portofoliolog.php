@@ -12,22 +12,31 @@ if(mysqli_num_rows($queryport) == 0){
 ?>
 
 
+
+
 <div class="tab-content" id="pills-tabContent">
     <div class="tab-pane fade show active" id="home" role="tabpanel">
         <section class="hero text-center" style="padding-top:5rem;" >
-            <img src="../asset/img/user/foto1.jpg" type="button" onclick="showedit()" alt="pict" class="rounded-circle img-thumbnail" href="#">
-            <h1 class="display-4"><?php echo $data['namaleng'];?></h1>
-            <p class="lead"><?php echo $data['txthero'];?></p>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-                <path fill="#fff" fill-opacity="1" d="M0,288L48,272C96,256,192,224,288,218.7C384,213,480,235,576,218.7C672,203,768,149,864,133.3C960,117,1056,139,1152,122.7C1248,107,1344,53,1392,26.7L1440,0L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
-            </svg>
+          <?php 
+          $pict = "nopict.png";
+          if ($data['foto'] != ''){
+            $pict = $data['foto'];
+          }
+          ?>
+          <h1><i type="button" title="Edit Nama" onClick="showedit()" class="fa-solid fa-pen-to-square"></i></h1>
+          <img src="../asset/img/user/<?= $pict?>" type="button" onclick="editpictshow()" alt="pict" class="rounded-circle img-thumbnail" title="Klik pada gambar untuk mengganti foto" width="250px" height="250px">
+          <h1 class="display-4"><?php echo $data['namaleng'];?></h1>
+          <p class="lead"><?php echo $data['txthero'];?></p>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+            <path fill="#fff" fill-opacity="1" d="M0,288L48,272C96,256,192,224,288,218.7C384,213,480,235,576,218.7C672,203,768,149,864,133.3C960,117,1056,139,1152,122.7C1248,107,1344,53,1392,26.7L1440,0L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+          </svg>
         </section>
 
         <section id="about">
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-sm text-center mb-3">
-                        <h2>About Me <i href="#" type="button" onclick="showedit2()" class="fa-solid fa-pen-to-square"></i></h2>
+                        <h2>About Me <i type="button" onclick="showedit2()" title="Edit About" class="fa-solid fa-pen-to-square"></i></h2>
                         
                     </div>
                 </div>
@@ -49,7 +58,7 @@ if(mysqli_num_rows($queryport) == 0){
             <div class="container">
                 <div class="row">
                     <div class="col-sm text-center mb-3">
-                        <h2>Project <i href="#" type="button" onClick="showadd()" class="fa-solid fa-pen-to-square"></i></h2>
+                        <h2>Project <i type="button" onClick="showadd()" title="Tambah Project" class="fa-solid fa-pen-to-square"></i></h2>
                     </div>
                 </div> 
                 <div class="row justify-content-center">
@@ -62,9 +71,10 @@ if(mysqli_num_rows($queryport) == 0){
                             <h2 class="text-center">Tidak Ada Data!</h2>
                             <?php
                         }else{
+                            $dp = mysqli_fetch_assoc($queryproject);
                             ?>
                             <div class="card">
-                                <img src="..." class="card-img-top" alt="...">
+                                <img src="../asset/img/projek<?= $dp['gambar']?>" class="card-img-top" alt="...">
                                 <div class="card-body">
                                     <p class="card-title"><?php echo $queryproject['title']?></p>
                                     <p class="card-text"><?php echo $queryproject['txt']?></p>
@@ -149,7 +159,7 @@ if(mysqli_num_rows($queryport) == 0){
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Edit</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Tambah data Project :</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -176,6 +186,38 @@ if(mysqli_num_rows($queryport) == 0){
       </div>
       <div class="modal-footer">
         <button type="submit" class="btn btn-primary" id="btnadd" onClick="btnAdd()" >Simpan</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="ppmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12 col-xs-12">
+            <div class="mb-3">
+            <input type="hidden" id="idsesi" name="esesi" value="<?php echo $data['sesi']?>">
+              <form id="gantiFoto" enctype="multipart/form-data">
+                <div class="custom-file">  
+                  <input type="file" name="pictfile" id="csfile" class="custom-file-input"></input>
+                  <label class="custom-file-label" for="csfile">Pilih Foto</label>
+                </div>
+                <small id="emailHelp" class="form-text text-secondary text-justify">Ukuran Foto (width = 250 px, heigth = 250 px). Format file: jpg, png, gif. Jangan lebih dari 512 kB).</small>
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" id="savegpict" onClick="gantifoto()" >Simpan</button>
       </div>
     </div>
   </div>

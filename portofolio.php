@@ -15,7 +15,13 @@ if(mysqli_num_rows($queryport) == 0){
 <div class="tab-content" id="pills-tabContent">
     <div class="tab-pane fade show active" id="home" role="tabpanel">
         <section class="hero text-center" style="padding-top:5rem;" >
-            <img src="asset/img/user/foto1.jpg" alt="pict" class="rounded-circle img-thumbnail">
+            <?php 
+            $pict = "nopict.png";
+            if ($data['foto'] != ''){
+                $pict = $data['foto'];
+            }
+            ?>
+            <img src="asset/img/user/<?= $pict?>" alt="..." class="rounded-circle img-thumbnail" width="250px" height="250px">
             <h1 class="display-4"><?php echo $data['namaleng']?></h1>
             <p class="lead"><?php echo $data['txthero'];?></p>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">

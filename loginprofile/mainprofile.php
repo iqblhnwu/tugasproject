@@ -20,10 +20,12 @@ if(!isset($_SESSION['lvl'])){
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="../asset/js/jquery-3.7.1.min.js"></script>
     <script src="../asset/js/bootstrap.bundle.js"></script>
-    <script src="../asset/js/pros.js"></script>
+    <script src="../asset/js/pros1.js"></script>
 
     <script>
         $(document).ready(function(){
+            
+
             $('.content').load('portofoliolog.php');
             
             $('.navi').on('click', function(e){
