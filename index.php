@@ -16,21 +16,20 @@ include "config/config.php";
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="asset/js/jquery-3.7.1.min.js"></script>
     <script src="asset/js/bootstrap.bundle.js"></script>
-    <script src="asset/js/pros1.js"></script>
 
     <script>
         $(document).ready(function(){
-            $('.content').load('portofolio.php');
+            $('#isi').load('portofolio.php');
             
             $('.login').on('click', function(e){
                 e.preventDefault();
                 var log = $(this).attr('id');
                 if(log == "btnhome"){
-                    $('.content').load('portofolio.php');
+                    $('#isi').load('portofolio.php');
                 }else if(log == "btnlogin"){
-                    $('.content').load('login.php');
+                    $('#isi').load('login.php');
                 }else if(log == "btnkoleksi"){
-                    $('.content').load('koleksi.php');
+                    $('#isi').load('koleksi.php');
                 }
             })
         })
@@ -59,7 +58,7 @@ include "config/config.php";
             </div>
         </nav>
     </header>
-    <div class="content"></div>
+    <div id="isi"></div>
 
     <footer style="background-color:#fde8ae;" class="text-center pb-3">
         <p>Created By <a href="#" class="text-dark">IqbalHunowu</a></p>

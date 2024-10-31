@@ -58,28 +58,29 @@ if(mysqli_num_rows($queryport) == 0){
                     </div>
                 </div>
                 <div class="row justify-content-center">
-                    <div class="col-md-4 mb-3">
-                        <?php 
-                            $sqlproject = "SELECT * FROM projek";
-                            $queryproject = mysqli_query($koneksi,$sqlproject);
-                            if(mysqli_num_rows($queryproject) == 0){
-                                ?>
-                                <h2 class="text-center">Tidak Ada Data!</h2>
-                                <?php
-                            }else{
-                                ?>
-                                <div class="card">
-                                    <img src="..." class="card-img-top" alt="...">
-                                    <div class="card-body">
-                                        <p class="card-title"><?php echo $queryproject['title']?></p>
-                                        <p class="card-text"><?php echo $queryproject['txt']?></p>
+                    <?php 
+                        $sqlproject = "SELECT * FROM projek";
+                        $queryproject = mysqli_query($koneksi,$sqlproject);
+                        if(mysqli_num_rows($queryproject) == 0){
+                    ?>
+                            <h2 class="text-center">Tidak Ada Data!</h2>
+                    <?php
+                        }else{
+                            while($dp = mysqli_fetch_assoc($queryproject)){
+                    ?>
+                                <div class="col-md-3 mb-3">
+                                    <div class="card">
+                                        <img src="asset/img/projek/<?= $dp['gambar']?>" class="card-img-top" alt="..." width="175px" height="175px">
+                                        <div class="card-body text-center">
+                                            <h5 class="card-title"><?php echo $dp['title']?></h5>
+                                            <p class="card-text"><?php echo $dp['txt']?></p>
+                                        </div>
                                     </div>
                                 </div>
-                                <?php
-                            }
-                            ?>
-                            
-                    </div>
+                    <?php
+                            }                               
+                        }
+                    ?>
                 </div>
             </div>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#fff" fill-opacity="1" d="M0,192L48,181.3C96,171,192,149,288,138.7C384,128,480,128,576,133.3C672,139,768,149,864,176C960,203,1056,245,1152,250.7C1248,256,1344,224,1392,208L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>
