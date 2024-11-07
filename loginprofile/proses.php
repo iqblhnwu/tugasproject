@@ -95,10 +95,13 @@ if($cek == 'edithero'){
     if($querydel){
         $data = mysqli_fetch_assoc($querydel);
         $pic = $data['foto'];
-        $upict = 'nopict.png';
+        if($pic != 'nopict.jpg'){
+            unlink("../asset/img/user/" . $pic);
+        }
+        $upict = 'nopict.jpg';
         $update = mysqli_query($koneksi,"UPDATE portdata SET `foto` = '" . $upict . "' WHERE `sesi` = 'Owner'");
         if($update){
-            unlink("../asset/img/user/" . $pic);
+            
             echo "ok";
         }
     }
@@ -116,7 +119,7 @@ if($cek == 'edithero'){
     }
 }else if($cek == 'addpjk'){
     $max_image_height = 250;
-    $max_image_width = 250;
+    $max_image_width = 400;
     $thumb_prefix = "thumb_";
     $destination_folder = "../asset/img/projek/";
     $jpeg_quality = 90;
@@ -188,7 +191,7 @@ if($cek == 'edithero'){
     }
 }else if($cek == 'ubahpjk'){
     $max_image_height = 250;
-    $max_image_width = 250;
+    $max_image_width = 400;
     $thumb_prefix = "thumb_";
     $destination_folder = "../asset/img/projek/";
     $jpeg_quality = 90;
@@ -286,79 +289,176 @@ if($cek == 'edithero'){
         echo 'ok';
     }
 
-}else if($cek == 'addpict'){
-    $max_image_height = 250;
+}else if($cek == 'addkoleksi'){
+    $max_image_height = 200;
     $max_image_width = 250;
     $thumb_prefix = "thumb_";
-    $destination_folder = "../asset/img/user/";
+    $destination_folder = "../asset/img/koleksi/";
     $jpeg_quality = 90;
 
-    // if(isset($_POST) && isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'){
-    //     $sesi = "Owner";
-    //     $svpic = "";
-    //     if(isset($_FILES['pictfile']) && is_uploaded_file($_FILES['pictfile']['tmp_name'])){
-    //         $image_name = $_FILES['pictfile']['name'];
-    //         $image_size = $_FILES['pictfile']['size'];
-    //         $image_temp = $_FILES['pictfile']['tmp_namae'];
+    if(isset($_POST) && isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'){
+        $sesi = $_POST['esesi'];
+        $judul = $_POST['ejudul'];
+        $deskrip = $_POST['eteks'];
+        $savePic = "";
 
-    //         if($image_size > 512000){
-    //             die("Ukuran file gambar terlalu besar, jangan lebih dari 5kb - (". $image_size .")");
-    //         }
-
-    //         $image_size_info = getimagesize($image_temp);
-
-    //         if($image_size_info){
-    //             $image_width = $image_size_info[0];
-    //             $image_height = $image_size_info[1];
-    //             $image_type = $image_size_info['mime'];
-    //         }else{
-    //             die("Pastikan file gambar yang diunggah ! !");
-    //         }
-    //         switch($image_type){
-    //             case 'image/png':
-    //                 $image_res = imagecreatefrompng($image_temp);
-    //             case 'image/gif':
-    //                 $image_res = imagecreatefromgif($image_temp);
-    //             case 'image/jpeg':
-
-    //             case 'image/jpg':
-    //                 $image_res = imagecreatefromjpeg($image_temp);
-    //                 break;
-    //             default:
-    //                 $image_res = false;
-    //         }
-    //         if($image_res){
-    //             $image_info = pathinfo($image_name);
-    //             $image_extension = strtolower($image_info["extension"]);
-    //             $image_name_only = strtolower($image_info["filename"]);
-    //             $kacak = random(5);
-    //             $new_file_name = 'User-' . $kacak . '-' . $sesi . '.' . $image_extension;
-    //             $namaGambar ="";
-
-    //             $lookpict = "SELECT foto FROM `portdata` WHERE `sesi` = '$sesi'";
-    //             $pictquery = mysqli_query($koneksi,$lookpict);
-    //             while($datap = mysqli_fetch_assoc($pictquery)){
-    //                 $namaGambar = $datap['foto'];
-    //             }
-    //             if(file_exists($destination_folder . $namaGambar)){
-    //                 if(($namaGambar != 'nopict.png')){
-    //                     unlink($destination_folder . $namaGambar);
-    //                 }
-    //             }
-
-    //             $image_save_folder = $destination_folder . $new_file_name;
+        if(isset($_FILES['fileFoto']) && is_uploaded_file($_FILES['fileFoto']['tmp_name'])){
+            $image_name = $_FILES['fileFoto']['name'];
+            $image_size = $_FILES['fileFoto']['size'];
+            $image_temp = $_FILES['fileFoto']['tmp_name'];
+            if($image_size > 512000){
+                $image_size = konversi($image_size);
+                die("File Gambar Anda Terlalu Besar ! !");
+            }
+            $image_size_info = getimagesize($image_temp);
+            if($image_size_info){
+                $image_width = $image_size_info[0];
+                $image_height = $image_size_info[1];
+                $image_type = $image_size_info['mime'];
+            }else{
+                die("Pastikan Anda Mengunggah File Gambar ! !");
+            }
+            switch($image_type){
+                case 'image/png':
+                    $image_res = imagecreatefrompng($image_temp);
+                    break;
+                case 'image/gif':
+                    $image_res = imagecreatefromgif($image_temp);
+                    break;
+                case 'image/jpeg':
+                case 'image/jpg':
+                    $image_res = imagecreatefromjpeg($image_temp);
+                    break;
+                default:
+                    $image_res = false;        
+            }
+            if($image_res){
+                $image_info = pathinfo($image_name);
+                $image_extension = strtolower($image_info["extension"]);
+                $image_name_only = strtolower($image_info["filename"]);
+                $ranKar = random(5);
+                $new_file_name = 'K-' . $ranKar . '-' . $sesi . '.' . $image_extension;
                 
-    //             if(normal_resize_image($image_res, $image_save_folder, $image_type, $max_image_width, $max_image_height, $image_width, $image_height, $jpeg_quality)){
-    //                 $sqlm = "UPDATE `portdata` SET `foto` = '$new_file_name' WHERE `sesi` = '$sesi'";
-    //                 $myqry = mysqli_query($koneksi,$sqlm);
-    //                 if($myqry){
-    //                     echo 'ok';
-    //                 }
-    //             }
-    //             imagedestroy($image_res);
-    //         }
-    //     }
-    // }
+                $image_save_folder = $destination_folder . $new_file_name;
+
+                if(normal_resize_image($image_res, $image_save_folder, $image_type, $max_image_width, $max_image_height, $image_width, $image_height, $jpeg_quality)){
+                    $savePic = "exist";
+                }
+                imagedestroy($image_res);
+            }
+        }
+        if($savePic == "exist"){
+            $pic = $new_file_name;
+        }else{
+            $pic = "nopict.jpg";
+        }
+        $sql = "INSERT INTO koleksi (foto, nama, deskrip, sesi) VALUES ('". $pic ."','". $judul ."','" . $deskrip . "', '" . $sesi . "')";
+        $query = mysqli_query($koneksi,$sql);
+
+        if($query){
+            echo "ok";
+        }else{
+            echo "$query";
+        }
+    }
+}else if($cek == 'deleteK'){
+    $hid = trim($_POST['id']);
+    $sqlc = "SELECT foto FROM koleksi WHERE `id` = '" . $hid . "'";
+    $queryc = mysqli_query($koneksi,$sqlc);
+    while($datac = mysqli_fetch_assoc($queryc)){
+        $gambarC = $datac['foto'];
+    }
+    if($gambarC != "nopict.jpg"){
+        unlink('../asset/img/koleksi/' . $gambarC);
+    }
+    $sqld = "DELETE FROM koleksi WHERE `id` = '" . $hid . "'";
+    $queryd = mysqli_query($koneksi,$sqld);
+    if($queryd){
+        echo 'ok';
+    }
+}else if($cek == 'editK'){
+    $max_image_height = 200;
+    $max_image_width = 250;
+    $thumb_prefix = "thumb_";
+    $destination_folder = "../asset/img/koleksi/";
+    $jpeg_quality = 90;
+    if(isset($_POST) && isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'){
+        $esesi = $_POST['esesi'];
+        $idpj = $_POST['eid'];
+        $ujudul = $_POST['ejudul'];
+        $udesk = $_POST['eteks'];
+        $savePic = "";
+
+        if(isset($_FILES['fileFoto']) && is_uploaded_file($_FILES['fileFoto']['tmp_name'])){
+            $image_name = $_FILES['fileFoto']['name'];
+            $image_size = $_FILES['fileFoto']['size'];
+            $image_temp = $_FILES['fileFoto']['tmp_name'];
+            if($image_size > 512000){
+                $image_size = konversi($image_size);
+                die("File Gambar Anda Terlalu Besar ! !");
+            }
+            $image_size_info = getimagesize($image_temp);
+            if($image_size_info){
+                $image_width = $image_size_info[0];
+                $image_height = $image_size_info[1];
+                $image_type = $image_size_info['mime'];
+            }else{
+                die("Pastikan Anda Mengunggah File Gambar ! !");
+            }
+            switch($image_type){
+                case 'image/png':
+                    $image_res = imagecreatefrompng($image_temp);
+                    break;
+                case 'image/gif':
+                    $image_res = imagecreatefromgif($image_temp);
+                    break;
+                case 'image/jpeg':
+                case 'image/jpg':
+                    $image_res = imagecreatefromjpeg($image_temp);
+                    break;
+                default:
+                    $image_res = false;        
+            }
+            if($image_res){
+                $image_info = pathinfo($image_name);
+                $image_extension = strtolower($image_info["extension"]);
+                $image_name_only = strtolower($image_info["filename"]);
+                $ranKar = random(5);
+                $new_file_name = 'K-' . $ranKar . '-' . $esesi . '.' . $image_extension;
+                
+                $namaGambar = "";
+                $fotodb = "SELECT foto FROM koleksi WHERE `id` = '" . $idpj ."'";
+                $fotoquery = mysqli_query($koneksi,$fotodb);
+                while($dataf = mysqli_fetch_array($fotoquery)){
+                    $namaGambar = $dataf['foto'];
+                }
+                if(file_exists($destination_folder . $namaGambar)){
+                    if($namaGambar != "nopict.jpg"){
+                        unlink($destination_folder . $namaGambar);
+                    }
+                }
+                $image_save_folder = $destination_folder . $new_file_name;
+
+                if(normal_resize_image($image_res, $image_save_folder, $image_type, $max_image_width, $max_image_height, $image_width, $image_height, $jpeg_quality)){
+                    $savePic = "exist";
+                }
+                imagedestroy($image_res);
+            }
+        }
+        if($savePic == "exist"){
+            $pic = $new_file_name;
+            $sql = "UPDATE koleksi SET `foto` = '" . $pic . "', `nama` = '" . $ujudul . "', `deskrip` = '" . $udesk . "' WHERE `id` = '" . $idpj . "'";
+            $query = mysqli_query($koneksi,$sql);
+            if($query){
+                echo "ok";
+            }
+        }
+        $sql = "UPDATE koleksi SET `nama` = '" . $ujudul . "', `deskrip` = '" . $udesk . "' WHERE `id` = '" . $idpj . "'";
+        $query = mysqli_query($koneksi,$sql);
+        if($query){
+            echo "ok";
+        }
+    }
 }
 
 

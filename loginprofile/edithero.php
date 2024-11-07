@@ -27,12 +27,19 @@ if(mysqli_num_rows($queryport) == 0){
                     vcek: cek
                 },
                 success: function(resp){
+                    $('#ppmodal').modal('hide');
                     if(resp.trim() == 'ok'){
                         alert("Berhasil Dihapus !");
-                        $('#ppmodal').modal('hide');
-                        window.location.reload();
+                        $.post('dataportofolio.php',{
+                        }, function(x){
+                            $('#tampilPortofolio').html(x)
+                        })
                     }else{
                         alert(resp);
+                        $.post('dataportofolio.php',{
+                        }, function(x){
+                            $('#tampilPortofolio').html(x)
+                        })
                     }
                 }
             })
@@ -51,16 +58,25 @@ if(mysqli_num_rows($queryport) == 0){
                 cache:false,
                 processData:false,
                 success: function(x){
+                    $('#ppmodal').modal('hide');
                     if(x.trim() == 'ok'){
-                        alert('Success!');
-                        $('#ppmodal').modal('hide');
-                        window.location.reload();
+                        alert("Success!");
+                        $.post('dataportofolio.php',{
+                        }, function(x){
+                            $('#tampilPortofolio').html(x)
+                        })
                     }else if(x.trim() == 'okok'){
-                        alert('Success!');
-                        $('#ppmodal').modal('hide');
-                        window.location.reload()
+                        alert("Success!");
+                        $.post('dataportofolio.php',{
+                        }, function(x){
+                            $('#tampilPortofolio').html(x)
+                        })
                     }else{
                         alert(x);
+                        $.post('dataportofolio.php',{
+                        }, function(x){
+                            $('#tampilPortofolio').html(x)
+                        })
                     }
                 }
             });

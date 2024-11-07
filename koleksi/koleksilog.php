@@ -1,11 +1,13 @@
 <?php 
-include 'config/config.php';
+session_start();
+
+include '../config/config.php';
 
 ?>
 
 <script>
     $(document).ready(function(){
-        $.post('datakol.php',{
+        $.post('../koleksi/datakoleksi.php',{
         }, function(respon){
             $('#TdataK').html(respon);
         })

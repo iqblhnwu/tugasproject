@@ -23,10 +23,13 @@ if(mysqli_num_rows($queryport) == 0){
                 cache:false,
                 processData:false,
                 success: function(x){
+                    $('#ppmodal').modal('hide');
                     if(x.trim() == 'ok'){
                         alert("Success!");
-                        $('#ppmodal').modal('hide');
-                        window.location.reload();
+                        $.post('dataportofolio.php',{
+                        }, function(x){
+                            $('#tampilPortofolio').html(x)
+                        })
                     }
                 }
             });

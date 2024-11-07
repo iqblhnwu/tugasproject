@@ -1,25 +1,18 @@
 <?php 
 include '../config/config.php';
 
-$sqlport = "SELECT * FROM portdata where sesi = 'Owner'";
-$queryport = mysqli_query($koneksi, $sqlport);
-if(mysqli_num_rows($queryport) == 0){
-    echo 'none';
-}else{
-    $data = mysqli_fetch_assoc($queryport);
-}
 ?>
+
 <script>
     $(document).ready(function(){
         $('.custom-file-input').on('change', function(e) {
             var fileName = e.target.files[0].name;
             $('.custom-file-label').html(fileName);
         });
-        
         $('#tambahData').on('submit', function(e){
             e.preventDefault();
             let formData = new FormData($(this)[0]);
-            formData.append('vcek','addpjk');
+            formData.append('vcek','addkoleksi');
             $.ajax({
                 url: "proses.php",
                 type: "POST",
@@ -28,18 +21,18 @@ if(mysqli_num_rows($queryport) == 0){
                 cache:false,
                 processData:false,
                 success: function(resp){
-                    $('#ppmodal').modal('hide');
+                    $('#Kmodal').modal('hide');
                     if(resp.trim() == 'ok'){
                         alert('Success !');
-                        $.post('dataportofolio.php',{
+                        $.post('../koleksi/datakoleksi.php',{
                         },function(data){
-                            $('#tampilPortofolio').html(data);
+                            $('#TdataK').html(data);
                         })
                     }else{
                         alert(resp);
-                        $.post('dataportofolio.php',{
+                        $.post('../koleksi/datakoleksi.php',{
                         }, function(x){
-                            $('#tampilPortofolio').html(data);
+                            $('#TdataK').html(data);
                         })
                     }
                 }
@@ -47,27 +40,28 @@ if(mysqli_num_rows($queryport) == 0){
         })
     })
 </script>
-<form id="tambahData" enctype="multipart/form-data">
+
+<form enctype="multipart/form-data" id="tambahData">
     <div class="mb-3">
         <div class="form-group">
-            <input type="hidden" id="idsesi" name="esesi" value="<?php echo $data['sesi']?>">
-            <label>Judul projek :</label>
+            <input type="hidden" id="idsesi" name="esesi" value="Owner">
+            <label>Nama :</label>
             <input type="text" name="ejudul" id="ijudul" class="form-control" required></input>
         </div>
         <div class="form-group">
-            <label>Pilih Foto :</label>
+            <label>Pilih Foto:</label>
             <div class="custom-file">
                 <input type="file" name="fileFoto" id="csfile" class="custom-file-input"></input>
                 <label class="custom-file-label" for="csfile">Choose file</label>
                 <small class="form-text text-info">Jika belum ada foto, boleh dikosongkan.</small>
-            </div> 
-        </div>    
+            </div>
+        </div>
         <div class="form-group">
             <div class="mb-3">
                 <label>Deskripsi :</label>
                 <textarea id="editeks" name="eteks" class="form-control" required></textarea>
             </div>
-        </div>     
+        </div>
     </div>
     <button type="submit" class="btn btn-primary" >Simpan</button>
 </form>

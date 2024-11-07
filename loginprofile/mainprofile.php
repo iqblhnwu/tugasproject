@@ -33,7 +33,7 @@ if(!isset($_SESSION['lvl'])){
                 if(log == "btnhome"){
                     $('#isi2').load('portofoliolog.php');
                 }else if(log == "btnkoleksi"){
-                    $('#isi2').load('koleksilog.php');
+                    $('#isi2').load('../koleksi/koleksilog.php');
                 }
                     
             })
