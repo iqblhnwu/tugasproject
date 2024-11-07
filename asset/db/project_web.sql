@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 31, 2024 at 06:14 PM
+-- Generation Time: Nov 07, 2024 at 03:54 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -31,8 +31,18 @@ CREATE TABLE `koleksi` (
   `id` int(11) NOT NULL,
   `nama` text DEFAULT NULL,
   `deskrip` text DEFAULT NULL,
+  `foto` text NOT NULL,
   `sesi` varchar(25) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `koleksi`
+--
+
+INSERT INTO `koleksi` (`id`, `nama`, `deskrip`, `foto`, `sesi`) VALUES
+(5, 'Vivo T1 5G', 'Handphone Vivo', 'nopict.jpg', 'Owner'),
+(6, 'Laptop', 'Laptop', 'K-nWfcc-Owner.png', 'Owner'),
+(7, 'Motor', 'Motor Vega 2011', 'nopict.jpg', 'Owner');
 
 -- --------------------------------------------------------
 
@@ -73,7 +83,7 @@ CREATE TABLE `portdata` (
 --
 
 INSERT INTO `portdata` (`namaleng`, `txthero`, `txtabout1`, `txtabout2`, `foto`, `sesi`) VALUES
-('Moh. Iqbal Hunowu', 'MahasiswaUNG23 || Teknik Elektro & Komputer || Teknik Komputer', 'Halo cuy', 'World!', 'nopict.jpg', 'Owner');
+('Moh. Iqbal Hunowu', 'Mahasiswa UNG23 || Teknik Elektro & Komputer || Teknik Komputer', 'Halo cuy! Namaku Moh.Iqbal Hunowu, seorang mahasiswa dari Universitas Negeri Gorontalo, Jurusan Teknik Elektro & Komputer, Program Studi Teknik Komputer. ', 'Pada semester 3 ini, terdapat matakuliah pemrograman web dan website ini adalah praktikumnya.', 'User-ZEBhx-Owner.jpg', 'Owner');
 
 -- --------------------------------------------------------
 
@@ -88,6 +98,13 @@ CREATE TABLE `projek` (
   `txt` text DEFAULT NULL,
   `sesi` varchar(25) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `projek`
+--
+
+INSERT INTO `projek` (`id`, `gambar`, `title`, `txt`, `sesi`) VALUES
+(57, 'PJ-rs12o-Owner.png', 'E-Vote V.1', 'Project aplikasi pertama pada matakuliah Pemrograman Berorientasi Objek', 'Owner');
 
 --
 -- Indexes for dumped tables
@@ -127,13 +144,13 @@ ALTER TABLE `projek`
 -- AUTO_INCREMENT for table `koleksi`
 --
 ALTER TABLE `koleksi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `projek`
 --
 ALTER TABLE `projek`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
 --
 -- Constraints for dumped tables
